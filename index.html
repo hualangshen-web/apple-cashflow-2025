@@ -102,9 +102,25 @@
     .flow-item:nth-child(2) { animation-delay: 0.2s; }
     .flow-item:nth-child(3) { animation-delay: 0.3s; }
     .flow-item:nth-child(4) { animation-delay: 0.4s; }
+    #particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .sankey-section {
+      padding: 80px 5%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    #sankey { width: 100%; height: 500px; }
   </style>
 </head>
 <body>
+  <canvas id="particles"></canvas>
   <div class="glow glow-1"></div>
   <div class="glow glow-2"></div>
 
@@ -130,6 +146,11 @@
         <div class="card-desc">股票回购、分红与债务偿还的股东回报</div>
       </div>
     </div>
+  </section>
+
+  <section class="sankey-section">
+    <h2 class="section-title">现金流桑基图</h2>
+    <svg id="sankey" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet"></svg>
   </section>
 
   <section class="flow-section">
@@ -170,5 +191,181 @@
     <p>Made by Timy · 无所吊谓</p>
     <p>数据为 FY2025 近似值，仅供演示</p>
   </footer>
+
+  <script>
+    // 数字滚动动画
+    function animateValue(element, start, end, duration, prefix = '', suffix = '') {
+      const range = end - start
+      const minTimer = 50
+      let stepTime = Math.abs(Math.floor(duration / range * 100))
+      stepTime = Math.max(stepTime, minTimer)
+      let startTime = new Date().getTime()
+      let endTime = startTime + duration
+      let timer
+
+      function run() {
+        let now = new Date().getTime()
+        let remaining = Math.max((endTime - now) / duration, 0)
+        let value = Math.round(end - (remaining * range))
+        element.textContent = prefix + value.toLocaleString() + suffix
+        if (value == end) clearInterval(timer)
+      }
+
+      timer = setInterval(run, stepTime)
+      run()
+    }
+
+    const cardValues = document.querySelectorAll('.card-value')
+    const map = [
+      { val: 118.2, prefix: '$', suffix: 'B' },
+      { val: 9.5, prefix: '+ $', suffix: 'B' },
+      { val: 110.7, prefix: '− $', suffix: 'B' }
+    ]
+
+    setTimeout(() => {
+      cardValues.forEach((el, i) => {
+        const m = map[i]
+        el.textContent = m.prefix + '0' + m.suffix
+        animateValue(el, 0, m.val, 2000, m.prefix, m.suffix)
+      })
+    }, 500)
+
+    // 粒子背景
+    const canvas = document.getElementById('particles')
+    const ctx = canvas.getContext('2d')
+    let particles = []
+    let mouse = { x: null, y: null }
+
+    function resize() {
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+    }
+    resize()
+    window.addEventListener('resize', resize)
+    window.addEventListener('mousemove', e => { mouse.x = e.x; mouse.y = e.y })
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width
+        this.y = Math.random() * canvas.height
+        this.size = Math.random() * 2 + 0.5
+        this.speedX = (Math.random() - 0.5) * 0.5
+        this.speedY = (Math.random() - 0.5) * 0.5
+        this.opacity = Math.random() * 0.5 + 0.2
+      }
+      update() {
+        this.x += this.speedX
+        this.y += this.speedY
+        if (this.x > canvas.width) this.x = 0
+        if (this.x < 0) this.x = canvas.width
+        if (this.y > canvas.height) this.y = 0
+        if (this.y < 0) this.y = canvas.height
+      }
+      draw() {
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`
+        ctx.beginPath()
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
+        ctx.fill()
+      }
+    }
+
+    for (let i = 0; i < 100; i++) particles.push(new Particle())
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      particles.forEach(p => { p.update(); p.draw() })
+
+      // 连线
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x
+          const dy = particles[i].y - particles[j].y
+          const distance = Math.sqrt(dx * dx + dy * dy)
+          if (distance < 120) {
+            ctx.strokeStyle = `rgba(255, 255, 255, ${0.1 * (1 - distance / 120)})`
+            ctx.lineWidth = 0.5
+            ctx.beginPath()
+            ctx.moveTo(particles[i].x, particles[i].y)
+            ctx.lineTo(particles[j].x, particles[j].y)
+            ctx.stroke()
+          }
+        }
+      }
+      requestAnimationFrame(animateParticles)
+    }
+    animateParticles()
+
+    // 桑基图
+    const sankeyData = {
+      nodes: [
+        { name: '经营现金流', x: 50, y: 100, value: 118.2, color: '#30d158' },
+        { name: '投资现金流', x: 50, y: 280, value: 9.5, color: '#2997ff' },
+        { name: '股票回购', x: 700, y: 60, value: 95.0, color: '#ff453a' },
+        { name: '现金分红', x: 700, y: 200, value: 15.7, color: '#ff9f0a' },
+        { name: '净现金增加', x: 700, y: 380, value: 17.0, color: '#f5f5f7' }
+      ],
+      links: [
+        { source: 0, target: 2, value: 95.0 },
+        { source: 0, target: 3, value: 15.7 },
+        { source: 0, target: 4, value: 7.5 },
+        { source: 1, target: 4, value: 9.5 }
+      ]
+    }
+
+    const svg = document.getElementById('sankey')
+    const ns = 'http://www.w3.org/2000/svg'
+
+    // 绘制节点
+    sankeyData.nodes.forEach(node => {
+      const g = document.createElementNS(ns, 'g')
+      const height = Math.max(node.value * 2.5, 40)
+      const rect = document.createElementNS(ns, 'rect')
+      rect.setAttribute('x', node.x)
+      rect.setAttribute('y', node.y)
+      rect.setAttribute('width', 160)
+      rect.setAttribute('height', height)
+      rect.setAttribute('rx', 12)
+      rect.setAttribute('fill', node.color)
+      rect.setAttribute('opacity', '0.85')
+      g.appendChild(rect)
+
+      const text = document.createElementNS(ns, 'text')
+      text.setAttribute('x', node.x + 80)
+      text.setAttribute('y', node.y + height / 2 + 5)
+      text.setAttribute('text-anchor', 'middle')
+      text.setAttribute('fill', '#000')
+      text.setAttribute('font-size', '14')
+      text.setAttribute('font-weight', '600')
+      text.textContent = `${node.name} $${node.value}B`
+      g.appendChild(text)
+
+      svg.appendChild(g)
+    })
+
+    // 绘制连线
+    sankeyData.links.forEach(link => {
+      const s = sankeyData.nodes[link.source]
+      const t = sankeyData.nodes[link.target]
+      const sHeight = Math.max(s.value * 2.5, 40)
+      const tHeight = Math.max(t.value * 2.5, 40)
+
+      const x1 = s.x + 160
+      const y1 = s.y + sHeight / 2
+      const x2 = t.x
+      const y2 = t.y + tHeight / 2
+
+      const path = document.createElementNS(ns, 'path')
+      const cp1x = x1 + (x2 - x1) * 0.5
+      const cp2x = x2 - (x2 - x1) * 0.5
+      path.setAttribute('d', `M ${x1} ${y1} C ${cp1x} ${y1}, ${cp2x} ${y2}, ${x2} ${y2}`)
+      path.setAttribute('stroke', s.color)
+      path.setAttribute('stroke-width', Math.max(link.value * 2.5, 8))
+      path.setAttribute('fill', 'none')
+      path.setAttribute('opacity', '0.4')
+      path.setAttribute('stroke-linecap', 'round')
+
+      svg.insertBefore(path, svg.firstChild)
+    })
+  </script>
 </body>
 </html>
