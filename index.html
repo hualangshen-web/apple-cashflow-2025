@@ -3,36 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Apple FY2025 现金流量表</title>
+<title>拼多多 FY2024 现金流量表</title>
 <style>
   *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
   body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
     background: #000;
     color: #f5f5f7;
     overflow-x: hidden;
   }
-
-  /* ── Scroll Snap ── */
   .snap-wrapper { scroll-snap-type: y proximity; }
-
-  /* ── Hero ── */
   .hero {
     min-height: 100vh; display:flex; flex-direction:column; justify-content:center; align-items:center;
     text-align:center; position:relative;
-    background: radial-gradient(ellipse at 50% 20%, #1a1a30 0%, #000 60%);
+    background: radial-gradient(ellipse at 50% 20%, #2a1a0a 0%, #1a0f00 40%, #000 80%);
     scroll-snap-align: start;
   }
   .hero::after {
     content:''; position:absolute; inset:0;
-    background-image: repeating-linear-gradient(0deg,transparent,transparent 1px,rgba(255,255,255,.01) 1px,rgba(255,255,255,.01) 2px);
+    background-image: repeating-linear-gradient(0deg,transparent,transparent 1px,rgba(255,100,20,.01) 1px,rgba(255,100,20,.01) 2px);
     pointer-events:none;
   }
-  .logo { font-size:120px; animation:logoFloat 3s ease-in-out infinite; }
+  .logo {
+    font-size:80px; font-weight:900; letter-spacing:-.02em; margin-bottom:8px;
+    background: linear-gradient(135deg,#ff2d55,#ff6b00,#ff2d55);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    animation:logoFloat 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 60px rgba(255,45,85,.3));
+  }
   @keyframes logoFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+  .pd-brand {
+    display:flex; align-items:center; gap:16px; margin-bottom:20px;
+    position:relative; z-index:1;
+  }
+  .pd-icon {
+    width:72px; height:72px; border-radius:18px;
+    background: linear-gradient(135deg,#ff2d55,#e81c3f);
+    display:flex; align-items:center; justify-content:center;
+    font-size:36px; color:#fff; font-weight:900;
+    box-shadow: 0 0 40px rgba(255,45,85,.3);
+  }
   h1 {
     font-size: clamp(3rem,10vw,8rem); font-weight:800; letter-spacing:-.04em;
-    background: linear-gradient(135deg,#fff 0%,#a8a8b8 40%,#fff 80%);
+    background: linear-gradient(135deg,#ff6b35 0%,#ff2d55 40%,#ff9f0a 80%);
     background-size:200% auto;
     -webkit-background-clip:text; -webkit-text-fill-color:transparent;
     animation:titleShine 4s linear infinite;
@@ -45,7 +59,6 @@
   }
   @keyframes bounce { to { transform:translateX(-50%) translateY(8px) } }
 
-  /* ── Metric Cards Grid ── */
   .metric-grid {
     display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
     gap:28px; width:min(92%,1300px); margin:60px auto 0; z-index:1; position:relative;
@@ -73,31 +86,26 @@
   .bar-wrap { margin-top:20px; height:6px; background:rgba(255,255,255,.06); border-radius:3px; overflow:hidden; }
   .bar-fill { height:100%; border-radius:3px; transition:width 1.5s cubic-bezier(.4,0,.2,1); width:0; }
 
-  /* colors */
-  .green { color:#30d158 } .green-fill { background:#30d158 }
-  .red { color:#ff453a } .red-fill { background:#ff453a }
-  .blue { color:#2997ff } .blue-fill { background:#2997ff }
-  .gold { color:#ffd700 } .gold-fill { background:linear-gradient(90deg,#ffd700,#ffaa00) }
+  .green { color:#ff6b35 } .green-fill { background:linear-gradient(90deg,#ff6b35,#ff2d55) }
+  .red { color:#ff2d55 } .red-fill { background:#ff2d55 }
+  .blue { color:#ff9f0a } .blue-fill { background:linear-gradient(90deg,#ff9f0a,#ff6b35) }
+  .gold { color:#ffd700 } .gold-fill { background:linear-gradient(90deg,#ffd700,#ff6b35) }
 
-  /* ── Sankey Section ── */
   .sankey-section {
     min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
-    padding:100px 5%; position:relative;
-    scroll-snap-align: start;
+    padding:100px 5%; position:relative; scroll-snap-align: start;
   }
   .section-title {
     font-size:clamp(2rem,5vw,3.5rem); font-weight:700; margin-bottom:60px; text-align:center;
-    background:linear-gradient(90deg,#fff,#86868b,#fff); background-size:200% auto;
+    background:linear-gradient(90deg,#ff2d55,#ff6b35,#ff2d55); background-size:200% auto;
     -webkit-background-clip:text; -webkit-text-fill-color:transparent;
     animation:titleShine 4s linear infinite;
   }
   #sankey { width:100%; max-width:1200px; height:550px; }
 
-  /* ── Waterfall ── */
   .waterfall {
     min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
-    padding:100px 24px;
-    scroll-snap-align: start;
+    padding:100px 24px; scroll-snap-align: start;
   }
   .wf-chart { width:min(100%,900px); margin-top:40px; display:flex; flex-direction:column; gap:12px; }
   .wf-bar {
@@ -106,14 +114,12 @@
   }
   .wf-bar .label { width:160px; font-size:14px; font-weight:600; text-align:right; padding-right:16px; flex-shrink:0; }
   .wf-bar .bar-track { flex:1; height:100%; background:rgba(255,255,255,.03); border-radius:12px; position:relative; }
-  .wf-bar .bar-fill-w { height:100%; border-radius:12px; transition:width 2s cubic-bezier(.4,0,.2,1); display:flex; align-items:center; padding-left:16px; }
+  .wf-bar .bar-fill-w { height:100%; border-radius:12px; transition:width 2s cubic-bezier(.4,0,.2,1); display:flex; align-items:center; padding-left:16px; width:0; }
   .wf-bar .amount { font-weight:800; font-size:18px; position:absolute; right:16px; top:50%; transform:translateY(-50%); color:#fff; }
 
-  /* ── Timeline ── */
   .timeline {
     min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
-    padding:100px 5%;
-    scroll-snap-align: start;
+    padding:100px 5%; scroll-snap-align: start;
   }
   .tl-track { display:flex; gap:40px; margin-top:60px; flex-wrap:wrap; justify-content:center; }
   .tl-node {
@@ -128,20 +134,17 @@
   }
   .tl-circle::after { content:''; position:absolute; inset:-6px; border-radius:50%; border:2px solid currentColor; opacity:.3; animation:ringPulse 2s ease-out infinite; }
   @keyframes ringPulse { 0%{transform:scale(1);opacity:.4} 100%{transform:scale(1.8);opacity:0} }
-  .tl-year { font-size:24px; font-weight:800; margin-bottom:4px; }
+  .tl-year { font-size:24px; font-weight:800; margin-bottom:4px; color:#fff; }
   .tl-val { font-size:30px; font-weight:800; }
   .tl-desc { font-size:13px; color:#86868b; margin-top:4px; }
 
-  /* ── Particles ── */
   #particles { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; }
 
-  /* ── Glow blobs ── */
-  .glow { position:fixed; border-radius:50%; filter:blur(120px); opacity:.25; pointer-events:none; z-index:-1; }
-  .glow-1 { background:#2997ff; width:500px; height:500px; top:5%; left:-150px; }
-  .glow-2 { background:#30d158; width:400px; height:400px; top:40%; right:-150px; }
-  .glow-3 { background:#bf5af2; width:450px; height:450px; bottom:5%; left:30%; }
+  .glow { position:fixed; border-radius:50%; filter:blur(120px); opacity:.2; pointer-events:none; z-index:-1; }
+  .glow-1 { background:#ff2d55; width:500px; height:500px; top:5%; left:-150px; }
+  .glow-2 { background:#ff6b35; width:400px; height:400px; top:40%; right:-150px; }
+  .glow-3 { background:#ff9f0a; width:450px; height:450px; bottom:5%; left:30%; }
 
-  /* ── Footer ── */
   footer { text-align:center; padding:80px 20px; color:#555; font-size:.85rem; position:relative; z-index:1; border-top:1px solid #1a1a1a; }
 
   @media (max-width:768px) {
@@ -162,32 +165,34 @@
 
 <!-- ═══ HERO ═══ -->
 <section class="hero">
-  <div class="logo"></div>
-  <h1>Cash Flow 2025</h1>
-  <p class="subtitle">Apple Inc. 财年现金流量全景可视化</p>
+  <div class="pd-brand">
+    <div class="pd-icon">PDD</div>
+  </div>
+  <h1>Cash Flow 2024</h1>
+  <p class="subtitle">拼多多 PDD Holdings · 年度现金流量全景</p>
   <div class="metric-grid">
     <div class="card" data-tilt>
       <div class="card-content">
-        <div class="card-label">🔵 经营活动现金流</div>
-        <div class="card-value green" data-animate="118.2" data-prefix="$" data-suffix="B">$0B</div>
-        <div class="card-desc">iPhone · 服务 · Mac · iPad 的强劲现金创造</div>
+        <div class="card-label">🔶 经营活动现金流</div>
+        <div class="card-value green" data-animate="1760" data-prefix="¥" data-suffix="亿">¥0亿</div>
+        <div class="card-desc">主站 + Temu 双引擎驱动，经营性现金创造能力爆发</div>
         <div class="bar-wrap"><div class="bar-fill green-fill" data-width="100"></div></div>
       </div>
     </div>
     <div class="card" data-tilt>
       <div class="card-content">
-        <div class="card-label">🟡 投资活动现金流</div>
-        <div class="card-value blue" data-animate="9.5" data-prefix="+ $" data-suffix="B">+ $0B</div>
-        <div class="card-desc">有价证券净到期超过 CapEx 与收购支出</div>
-        <div class="bar-wrap"><div class="bar-fill blue-fill" data-width="35"></div></div>
+        <div class="card-label">🟠 投资活动现金流</div>
+        <div class="card-value blue" data-animate="889" data-prefix="− ¥" data-suffix="亿">− ¥0亿</div>
+        <div class="card-desc">Temu 全球仓储物流基建 + 短期理财净投入</div>
+        <div class="bar-wrap"><div class="bar-fill blue-fill" data-width="51"></div></div>
       </div>
     </div>
     <div class="card" data-tilt>
       <div class="card-content">
         <div class="card-label">🔴 融资活动现金流</div>
-        <div class="card-value red" data-animate="110.7" data-prefix="− $" data-suffix="B">− $0B</div>
-        <div class="card-desc">$95B 股票回购 + $15.7B 分红派息</div>
-        <div class="bar-wrap"><div class="bar-fill red-fill" data-width="94"></div></div>
+        <div class="card-value red" data-animate="302" data-prefix="− ¥" data-suffix="亿">− ¥0亿</div>
+        <div class="card-desc">股票回购计划 + 少量债务偿还</div>
+        <div class="bar-wrap"><div class="bar-fill red-fill" data-width="17"></div></div>
       </div>
     </div>
   </div>
@@ -208,13 +213,13 @@
 
 <!-- ═══ TIMELINE ═══ -->
 <section class="timeline">
-  <h2 class="section-title">十年现金流趋势</h2>
+  <h2 class="section-title">六年现金流趋势</h2>
   <div class="tl-track" id="timeline"></div>
 </section>
 
 <footer>
   <p>Made by Timy · 无所吊谓</p>
-  <p>数据为 FY2025 近似值 · 仅供演示</p>
+  <p>数据为 FY2024 近似值 · 仅供参考</p>
 </footer>
 
 </div>
@@ -237,7 +242,8 @@ class Particle {
     if(this.y>pCanvas.height+10) this.reset();
   }
   draw(){
-    pCtx.fillStyle=`rgba(255,255,255,${this.op})`;
+    const r=Math.random()>.5?'255,100,50':'255,45,85';
+    pCtx.fillStyle=`rgba(${r},${this.op})`;
     pCtx.beginPath(); pCtx.arc(this.x,this.y,this.size,0,Math.PI*2); pCtx.fill();
   }
 }
@@ -257,16 +263,12 @@ function animateValue(el,start,end,dur,prefix='',suffix=''){
   function run(){
     let now=Date.now(),rem=Math.max((et-now)/dur,0);
     let v=Math.round(end-(rem*range));
-    let txt=v;
-    if(end==Math.floor(end)) txt=v.toLocaleString();
-    else txt=v.toLocaleString()+'.'+Math.round((end-v)*(end%1?10:0));
-    el.textContent=prefix+txt+suffix;
+    el.textContent=prefix+v.toLocaleString()+suffix;
     if(v>=end) clearInterval(timer);
   }
   timer=setInterval(run,step);run();
 }
 
-// ── Animate bars ──
 function animateBars(){
   document.querySelectorAll('.bar-fill').forEach(b=>{
     const w=parseFloat(b.dataset.width);
@@ -274,17 +276,16 @@ function animateBars(){
   });
 }
 
-// ── Number animation trigger ──
 setTimeout(()=>{
   document.querySelectorAll('.card-value[data-animate]').forEach(el=>{
     const v=parseFloat(el.dataset.animate), p=el.dataset.prefix||'', s=el.dataset.suffix||'';
     el.textContent=p+'0'+s;
-    animateValue(el,0,v,2000,p,s);
+    animateValue(el,0,v,2200,p,s);
   });
   animateBars();
 },600);
 
-// ── 3D Tilt Cards ──
+// ── 3D Tilt ──
 document.querySelectorAll('.card').forEach(card=>{
   card.addEventListener('mousemove',e=>{
     const r=card.getBoundingClientRect();
@@ -298,32 +299,31 @@ document.querySelectorAll('.card').forEach(card=>{
   });
 });
 
-// ── Sankey ──
+// ── Sankey (PDD data ¥) ──
 (function drawSankey(){
   const svg=document.getElementById('sankey'), ns='http://www.w3.org/2000/svg';
   const nodes=[
-    {name:'经营现金流',x:40,y:60,v:118.2,color:'#30d158'},
-    {name:'投  资',x:40,y:220,v:9.5,color:'#2997ff'},
-    {name:'股票回购',x:720,y:30,v:95,color:'#ff453a'},
-    {name:'现金分红',x:720,y:180,v:15.7,color:'#ff9f0a'},
-    {name:'资本支出',x:720,y:300,v:10.5,color:'#bf5af2'},
-    {name:'债务/其他',x:720,y:400,v:6.5,color:'#5ac8fa'},
+    {name:'经营流入',x:40,y:60,v:1760,color:'#ff6b35'},
+    {name:'投  资',x:40,y:240,v:-889,color:'#ff9f0a'},
+    {name:'Temu基建',x:720,y:30,v:650,color:'#ff2d55'},
+    {name:'理财投资',x:720,y:170,v:490,color:'#ff6b35'},
+    {name:'股票回购',x:720,y:300,v:302,color:'#ff375f'},
+    {name:'净增现金',x:720,y:420,v:408,color:'#ffd700'},
   ];
   const links=[
-    {s:0,t:2,v:95},{s:0,t:3,v:15.7},{s:0,t:5,v:7.5},{s:1,t:4,v:9.5}
+    {s:0,t:2,v:650},{s:0,t:3,v:490},{s:1,t:2,v:320},{s:1,t:3,v:200},{s:0,t:5,v:620},{s:1,t:4,v:167}
   ];
 
-  // links first (behind)
   links.forEach(l=>{
-    const sn=nodes[l.s], tn=nodes[l.t], sh=Math.max(sn.v*2.2,48), th=Math.max(tn.v*2.2,48);
+    const sn=nodes[l.s], tn=nodes[l.t], sh=Math.max(Math.abs(sn.v)*.08,48), th=Math.max(Math.abs(tn.v)*.08,48);
     const x1=sn.x+170, y1=sn.y+sh/2, x2=tn.x, y2=tn.y+th/2;
     const path=document.createElementNS(ns,'path');
     const cpx=x1+(x2-x1)*.6;
     path.setAttribute('d',`M${x1} ${y1} C${cpx} ${y1},${cpx} ${y2},${x2} ${y2}`);
     path.setAttribute('stroke',sn.color);
-    path.setAttribute('stroke-width',Math.max(l.v*2.2,8));
+    path.setAttribute('stroke-width',Math.max(Math.abs(l.v)*.06,6));
     path.setAttribute('fill','none');
-    path.setAttribute('opacity','.35');
+    path.setAttribute('opacity','.4');
     path.setAttribute('stroke-linecap','round');
     const len=path.getTotalLength();
     path.style.strokeDasharray=`${len*.25} ${len*.75}`;
@@ -332,19 +332,17 @@ document.querySelectorAll('.card').forEach(card=>{
     svg.appendChild(path);
   });
 
-  // nodes
   nodes.forEach(n=>{
-    const g=document.createElementNS(ns,'g'), h=Math.max(n.v*2.2,48);
+    const g=document.createElementNS(ns,'g'), h=Math.max(Math.abs(n.v)*.08,48);
     const rect=document.createElementNS(ns,'rect');
     rect.setAttribute('x',n.x);rect.setAttribute('y',n.y);
     rect.setAttribute('width',170);rect.setAttribute('height',h);
     rect.setAttribute('rx',14);rect.setAttribute('fill',n.color);rect.setAttribute('opacity','.85');
-
     const text=document.createElementNS(ns,'text');
     text.setAttribute('x',n.x+85);text.setAttribute('y',n.y+h/2+5);
-    text.setAttribute('text-anchor','middle');text.setAttribute('fill','#000');
+    text.setAttribute('text-anchor','middle');text.setAttribute('fill','#fff');
     text.setAttribute('font-size','13');text.setAttribute('font-weight','700');
-    text.textContent=`${n.name}  $${n.v}B`;
+    text.textContent=`${n.name}  ¥${Math.abs(n.v)}亿`;
     g.appendChild(rect);g.appendChild(text);svg.appendChild(g);
   });
 
@@ -357,13 +355,12 @@ document.querySelectorAll('.card').forEach(card=>{
 (function drawWaterfall(){
   const container=document.getElementById('waterfall');
   const bars=[
-    {label:'经营现金流',val:118.2,color:'#30d158'},
-    {label:'股票回购',val:-95,color:'#ff453a'},
-    {label:'现金分红',val:-15.7,color:'#ff6b35'},
-    {label:'CapEx',val:-10.5,color:'#bf5af2'},
-    {label:'投资净流入',val:9.5,color:'#2997ff'},
-    {label:'债务/其他',val:10.5,color:'#5ac8fa'},
-    {label:'净现金增加',val:17,color:'#ffd700',isTotal:true},
+    {label:'经营流入',val:1760,color:'#ff6b35'},
+    {label:'Temu 基建',val:-650,color:'#ff2d55'},
+    {label:'理财投资',val:-490,color:'#ff9f0a'},
+    {label:'股票回购',val:-302,color:'#ff375f'},
+    {label:'利息/其他',val:90,color:'#34c759'},
+    {label:'净现金增加',val:408,color:'#ffd700',isTotal:true},
   ];
 
   bars.forEach(bar=>{
@@ -374,14 +371,14 @@ document.querySelectorAll('.card').forEach(card=>{
     fill.style.background=bar.color;
     const amt=document.createElement('div'); amt.className='amount';
     amt.style.color=bar.isTotal?'#ffd700':'#fff';
-    amt.textContent=(bar.val>=0?'+':'')+'$'+Math.abs(bar.val)+'B';
+    amt.textContent=(bar.val>=0?'+':'')+'¥'+Math.abs(bar.val)+'亿';
     track.appendChild(fill); track.appendChild(amt);
     div.appendChild(lbl); div.appendChild(track);
     container.appendChild(div);
 
     setTimeout(()=>{
       const maxW=Math.max(...bars.map(b=>Math.abs(b.val)));
-      fill.style.width=(Math.abs(bar.val)*1.5/maxW*100)+'%';
+      fill.style.width=(Math.abs(bar.val)*1.2/maxW*100)+'%';
     },200);
   });
 })();
@@ -390,14 +387,14 @@ document.querySelectorAll('.card').forEach(card=>{
 (function drawTimeline(){
   const container=document.getElementById('timeline');
   const data=[
-    {year:'2016',val:'$65.8B',desc:'现金牛成型'},
-    {year:'2018',val:'$77.4B',desc:'服务起飞'},
-    {year:'2020',val:'$80.7B',desc:'疫情逆增'},
-    {year:'2022',val:'$122.2B',desc:'历史峰值'},
-    {year:'2023',val:'$110.5B',desc:'宏观承压'},
-    {year:'2025',val:'$118.2B',desc:'王者归来'},
+    {year:'2019',val:'¥287亿',desc:'百亿补贴起量'},
+    {year:'2020',val:'¥485亿',desc:'用户破7亿'},
+    {year:'2021',val:'¥632亿',desc:'盈利拐点'},
+    {year:'2022',val:'¥941亿',desc:'Temu 起航'},
+    {year:'2023',val:'¥1,350亿',desc:'全球狂奔'},
+    {year:'2024',val:'¥1,760亿',desc:'现金机器 🔥'},
   ];
-  const colors=['#30d158','#30d158','#2997ff','#ffd700','#30d158','#ffd700'];
+  const colors=['#ff6b35','#ff6b35','#ff9f0a','#ff2d55','#ff375f','#ffd700'];
 
   data.forEach((d,i)=>{
     const div=document.createElement('div'); div.className='tl-node';
@@ -411,14 +408,13 @@ document.querySelectorAll('.card').forEach(card=>{
     container.appendChild(div);
   });
 
-  // Intersection Observer to trigger visibility
   const obs2=new IntersectionObserver(entries=>{
     entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
   },{threshold:.3});
   document.querySelectorAll('.tl-node').forEach(n=>obs2.observe(n));
 })();
 
-// ── Glow follows scroll ──
+// ── Glow parallax ──
 window.addEventListener('scroll',()=>{
   const y=window.scrollY;
   document.querySelector('.glow-1').style.transform=`translateY(${y*.15}px)`;
@@ -426,7 +422,6 @@ window.addEventListener('scroll',()=>{
   document.querySelector('.glow-3').style.transform=`translateY(${-y*.2}px)`;
 });
 
-// ── Section title observer ──
 const titleObs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{
     if(e.isIntersecting) e.target.style.animation='titleShine 3s linear infinite';
